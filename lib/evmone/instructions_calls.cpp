@@ -137,6 +137,9 @@ evmc_status_code create_impl(StackTop stack, ExecutionState& state) noexcept
     stack.push(0);
     state.return_data.clear();
 
+    if (!state.host.check_nonce(state.msg->recipient)) // EIP-2681
+        return EVMC_SUCCESS;
+
     if (state.msg->depth >= 1024)
         return EVMC_SUCCESS;
 
